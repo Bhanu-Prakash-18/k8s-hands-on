@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scaling-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: scaling-demo
+  template:
+    metadata:
+      labels:
+        app: scaling-demo
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
