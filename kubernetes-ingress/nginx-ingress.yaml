@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    # This annotation ensures that NGINX will rewrite the URL path correctly
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx     # Must match your ingress controller class
+  rules:
+  - host: nginx.local          # The domain name users will access
+    http:
+      paths:
+      - path: /                # All traffic at "/" path
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service   # Name of your existing service
+            port:
+              number: 80          # Service port (not NodePort)
+

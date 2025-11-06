@@ -1,0 +1,70 @@
+🚀 Kubernetes NGINX Frontend & Backend Setup (Minikube)
+
+This project demonstrates how to deploy two NGINX-based applications — frontend and backend — in a Kubernetes cluster using Deployments, Services, and Ingress.
+It also includes steps to access the apps through a single domain name using path-based routing.
+
+🧱 Components Used
+
+Frontend Deployment: Runs 2 replicas of NGINX
+
+Backend Deployment: Runs 1 replica of NGINX
+
+Services: Expose each deployment internally using ClusterIP
+
+Ingress: Routes external traffic to services using paths /frontend and /backend
+
+⚙️ Setup Commands
+1️⃣ Start Minikube
+minikube start --driver=docker
+
+2️⃣ Enable Ingress Controller
+minikube addons enable ingress
+
+3️⃣ Apply Deployments
+kubectl apply -f kubernetes-deployment/frontend-deployment.yaml
+kubectl apply -f kubernetes-deployment/backend-deployment.yaml
+
+4️⃣ Apply Services
+kubectl apply -f kubernetes-deployment/frontend-service.yaml
+kubectl apply -f kubernetes-deployment/backend-service.yaml
+
+5️⃣ Apply Ingress
+kubectl apply -f kubernetes-ingress/app-ingress.yaml
+
+🌐 Accessing the Applications
+
+Get the Minikube IP:
+
+minikube ip
+
+
+Example: 192.168.49.2
+
+Add a host entry in /etc/hosts:
+
+192.168.49.2  myapp.local
+
+
+Access the apps in your browser or curl:
+
+http://myapp.local/frontend
+http://myapp.local/backend
+
+
+If the Ingress doesn’t show an IP, run:
+
+minikube tunnel
+
+🧠 Verification Commands
+kubectl get pods
+kubectl get svc
+kubectl get ingress
+kubectl get pods -n kube-system | grep ingress
+
+✅ Outcome
+
+http://myapp.local/frontend → routes to frontend-service (2 pods)
+
+http://myapp.local/backend → routes to backend-service (1 pod)
+
+Ingress manages all traffic through one IP and one domain name.
